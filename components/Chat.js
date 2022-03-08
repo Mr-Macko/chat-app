@@ -43,12 +43,12 @@ export default class Chat extends React.Component {
   renderBubble(props) {
     return (
       <Bubble
-      {...props}
-      wrapperStyle={{
-        right: {
-          backgroundColor: '#000'
-        }
-      }}
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#000'
+          }
+        }}
       />
     )
   }
@@ -60,16 +60,16 @@ export default class Chat extends React.Component {
     const { bgColor } = this.props.route.params;
 
     return (
-      <View style={{backgroundColor: bgColor, flex: 1}}>
-      <GiftedChat
-        renderBubble={this.renderBubble.bind(this)}
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-      />
-      { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null }
+      <View style={{ backgroundColor: bgColor, flex: 1 }}>
+        <GiftedChat
+          renderBubble={this.renderBubble.bind(this)}
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+        />
+        {Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
       </View>
     );
   }
