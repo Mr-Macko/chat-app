@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat'
+import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 
 const firebase = require('firebase');
 require('firebase/firestore');
@@ -34,6 +36,37 @@ export default class Chat extends React.Component {
 
   }
 
+  async getMessages() {
+    let messages = '';
+    try {
+      messages = await AsyncStorage.getItem('messages') || [];
+      this.setState({
+        messages: JSON.parse(messages)
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  async saveMessages() {
+    try {
+      await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async deleteMessages() {
+    try {
+      await AsyncStorage.removeItem('messages');
+      this.setState({
+        messages: []
+      })
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
   componentDidMount() {
     let { name } = this.props.route.params;
 
@@ -57,38 +90,16 @@ export default class Chat extends React.Component {
         .onSnapshot(this.onCollectionUpdate);
     });
 
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'Hello developer',
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: 'https://placeimg.com/140/140/any',
-          },
-        },
-        {
-          _id: 2,
-          text: `${name} has entered the chat`,
-          createdAt: new Date(),
-          system: true,
-        },
-      ],
-    })
+    this.getMessages();
   }
 
   // Add message to state
   onSend(messages = []) {
-    this.setState(
-      (previousState) => ({
-        messages: GiftedChat.append(previousState.messages, messages),
-      }),
-      () => {
-        this.addMessages();
-      }
-    );
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }), () => {
+      this.saveMessages();
+    });
   }
 
   //Add message to database
