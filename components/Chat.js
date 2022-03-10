@@ -70,6 +70,16 @@ export default class Chat extends React.Component {
   componentDidMount() {
     let { name } = this.props.route.params;
 
+    this.getMessages();
+
+    NetInfo.fetch().then(connection => {
+      if (connection.isConnected) {
+        console.log('online');
+      } else {
+        console.log('offline');
+      }
+    });
+
     this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         firebase.auth().signInAnonymously();
@@ -89,8 +99,6 @@ export default class Chat extends React.Component {
         .orderBy("createdAt", "desc")
         .onSnapshot(this.onCollectionUpdate);
     });
-
-    this.getMessages();
   }
 
   // Add message to state
@@ -153,6 +161,17 @@ export default class Chat extends React.Component {
   componentWillUnmount() {
     this.authUnsubscribe();
     this.unsubscribe();
+  }
+
+  renderInputToolbar(props) {
+    if (this.state.isConnected == false) {
+    } else {
+      return(
+        <InputToolbar
+        {...props}
+        />
+      );
+    }
   }
 
   render() {
