@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Platform, KeyboardAvoidingView } from 'react-native';
 import { Bubble, GiftedChat } from 'react-native-gifted-chat'
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 
 const firebase = require('firebase');
