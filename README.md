@@ -7,6 +7,16 @@ The Appclication is build with React Native for mobile devices. The app provides
 - The chat must provide users with two additional communication features: sending images and location data.
 - Data gets stored online and offline.
 
+## Installation
+Fork or download this repo.  
+`npm install` or `yarn install` in the terminal to install all dependencies.
+
+## How to use Chat App
+1. Download and install the code.
+2. Install Expo globally `npm install --global expo-cli`.
+3. To start the app, run `expo start` or `npm start`.
+4. To run the app on a device, install an emulator or expo go on your smartphone.
+
 ## Tech Stack
 - React Native
 - Expo
